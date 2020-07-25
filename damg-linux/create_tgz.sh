@@ -31,57 +31,44 @@ echo -n -e "\r[                                                                 
 sleep 0.1
 
 # Clear expire files or directories.
-rm -f ./$BIN_NAME.bin >/dev/null 2>&1
-rm -f ./$BIN_NAME.tgz >/dev/null 2>&1
-rm -rf dist build __pycache__ *.spec target.tgz >/dev/null 2>&1
+rm -f ./$BIN_NAME.bin
+rm -f ./$BIN_NAME.tgz
+rm -rf dist build __pycache__ *.spec target.tgz
+rm -f src/*.spec
 echo -n -e "\r[ =======                                                               10% ]"
 sleep 1
 
 # Make the executable files.
-/opt/python3/bin/pyinstaller -F dam_collect.py >/dev/null 2>&1
+/opt/python3/bin/pyinstaller -F ./src/dam_collect.py >/dev/null 2>&1
 echo -n -e "\r[ ========================                                              30% ]"
 
-/opt/python3/bin/pyinstaller -F dam_high_frequency.py >/dev/null 2>&1
+/opt/python3/bin/pyinstaller -F ./src/dam_high_frequency.py >/dev/null 2>&1
 echo -n -e "\r[ ============================================                          60% ]"
 
 # Make the executable files.
-/opt/python3/bin/pyinstaller -F dam_daemon.py >/dev/null 2>&1
+/opt/python3/bin/pyinstaller -F ./src/dam_daemon.py >/dev/null 2>&1
 echo -n -e "\r[ ================================================================      90% ]"
 
-# Make the configuration.
-echo '[public]' > ./dist/damg.conf
-echo 'start_time =' >> ./dist/damg.conf
-echo 'cycle_time =' >> ./dist/damg.conf
-echo 'if_wmconcat = yes' >> ./dist/damg.conf
-echo 'limit_cpu = 80' >> ./dist/damg.conf
-echo 'limit_iops = 50000' >> ./dist/damg.conf
-echo 'listen_host =' >> ./dist/damg.conf
-echo '' >> ./dist/damg.conf
-echo '[oracle]' >> ./dist/damg.conf
-echo 'health_time = 7' >> ./dist/damg.conf
-echo 'sys_password =' >> ./dist/damg.conf
-echo 'users =' >> ./dist/damg.conf
-sleep 0.1
+# Prepare the other file.
+cp ./conf/damg.conf ./dist/
+cp ./src/create_wmconcat.sh ./dist/
+cp ./tools/* ./dist/
+sleep 1
 
-# Move the sql file.
-cp create_wmconcat.sh ./dist/
-
-#
 # Compress it.
-#
-tar cvzf target.tgz dist >/dev/null 2>&1
+tar cvzf target.tgz dist >/dev/null
 
-#
 # Build a new bin file.
-#
+chmod 777 install.sh
 cat install.sh target.tgz >$BIN_NAME.bin
-chmod +x ./$BIN_NAME.bin >/dev/null 2>&1
+chmod 777 ./$BIN_NAME.bin
 
-tar cvzf $BIN_NAME.tgz $BIN_NAME.bin >/dev/null 2>&1
-rm -f $BIN_NAME.bin >/dev/null 2>&1
+tar cvzf $BIN_NAME.tgz $BIN_NAME.bin >/dev/null
+rm -f $BIN_NAME.bin
 
 # Clear expire files or directories.
-rm -rf dist build __pycache__ *.spec target.tgz >/dev/null 2>&1
+rm -rf dist build __pycache__ *.spec target.tgz
+rm -f src/*.spec
 echo -n -e "\r[ =============================================================== Comp1ete! ]"
 sleep 1
 

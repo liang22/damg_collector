@@ -3,7 +3,7 @@
    Linux上为防止和python3冲突，默认安装在/opt/python3下
 2.安装psutil工具，/opt/python3/bin/pip3 install psutil；
 3.安装pyinstaller工具，/opt/python3/bin/pip3 install pyinstaller；
-4.将代码部署在独立目录下，执行./create_tgz.sh，
+4.将代码部署在独立目录下，赋于create_tgz.sh执行权限(chmod +x)并执行，
    打包需要一定时间，之后会生成tgz包；
 
 

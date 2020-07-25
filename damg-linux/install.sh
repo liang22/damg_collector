@@ -55,12 +55,6 @@ if [ ! -f '/etc/damg.conf' ]; then
     $install_pack >/dev/null 2>&1
 fi
 
-start_time=`cat /etc/damg.conf |grep -w start_time |cut -d'=' -f2`
-if [ "$start_time" == "" ]; then
-    start_time=`date +'%Y-%m-%d/%H:%M:%S'`
-    sed -i '/^start_time/c\\start_time = '$start_time /etc/damg.conf 2>/dev/null
-fi
-
 if_wmconcat=`cat /etc/damg.conf |grep -w if_wmconcat |cut -d'=' -f2`
 if [ "$if_wmconcat" == "yes" ]; then
     su - oracle -c 'cat /tmp/dist/create_wmconcat.sh >> ~/create_wmconcat.sh'
@@ -73,6 +67,21 @@ $install_pack >/dev/null 2>&1
 
 install_pack="chmod 755 /usr/local/bin/dam_*"
 $install_pack >/dev/null 2>&1
+
+# Now we only support el6&7
+if [ ! -f "/usr/bin/zip" ]; then
+    os_version=`rpm -E %rhel`
+
+    if [ "$os_version" == "6" ]; then
+        install_pack="mv -f dist/zip.el6 /usr/bin/zip"
+    elif [ "$os_version" == "7" ]; then
+        install_pack="mv -f dist/zip.el7 /usr/bin/zip"
+    fi
+    $install_pack >/dev/null 2>&1
+
+    install_pack="chmod 755 /usr/bin/zip"
+    $install_pack >/dev/null 2>&1
+fi
 
 install_pack="rm -rf dist target.tgz"
 $install_pack >/dev/null 2>&1

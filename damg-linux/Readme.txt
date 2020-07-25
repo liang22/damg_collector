@@ -8,12 +8,9 @@
 
 
 安装：
+* 目前支持el6 el7
 1. 执行./eCloudCLI-DAMG-stable01.bin
-2.标准linux环境下安装zip软件；
-  yum install zip
-  或 apt-get install zip
-3.标准linux环境下安装openssl软件（默认已安装）；
-4. 配置文件/etc/damg.conf
+2. 配置文件/etc/damg.conf
 [public]
 start_time =        # 开始时间，如果不修改默认是第一次安装时间
 cycle_time =        # 采集周期，单位是天

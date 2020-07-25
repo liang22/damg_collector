@@ -8,9 +8,7 @@
 1.解压eCloudCLI-DAMG-stable01.zip
 2.安装eCloudCLI-DAMG-stable01.exe
   第一次安装需要勾选最后的运行（环境适配工作）
-3.安装zip软件（若cmd没有zip指令需要手动配置环境变量）；
-4.安装openssl软件（若cmd没有openssl指令需要手动配置环境变量）；
-5.配置文件C:\damg\etc\damg.conf
+3.配置文件C:\damg\etc\damg.conf
 [public]
 start_time =        # 开始时间，如果不修改默认是第一次安装时间
 cycle_time =        # 采集周期，单位是天
